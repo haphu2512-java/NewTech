@@ -58,7 +58,7 @@ zalo-clone/
 
 ```bash
 # Di chuyển vào thư mục project
-cd e:/1.HK2_2026/CongNgheMoi/zalo-clone
+cd .../zalo-clone
 
 # Khởi động tất cả services
 docker-compose up -d
