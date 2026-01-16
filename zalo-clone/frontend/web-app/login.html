@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zalo Clone - Chat App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .toggle-form {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .toggle-form a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💬 Zalo Clone</h1>
+        
+        <div id="message" class="message"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+            <h2 style="text-align: center; margin-bottom: 25px; color: #333;">Đăng Nhập</h2>
+            <div class="form-group">
+                <label for="loginUsername">Tên đăng nhập hoặc Email</label>
+                <input type="text" id="loginUsername" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Mật khẩu</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit">Đăng Nhập</button>
+            <div class="toggle-form">
+                Chưa có tài khoản? <a href="#" onclick="toggleForm(); return false;">Đăng ký ngay</a>
+            </div>
+        </form>
+
+        <!-- Register Form (Hidden) -->
+        <form id="registerForm" style="display: none;">
+            <h2 style="text-align: center; margin-bottom: 25px; color: #333;">Đăng Ký</h2>
+            <div class="form-group">
+                <label for="regUsername">Tên đăng nhập</label>
+                <input type="text" id="regUsername" required minlength="3">
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email</label>
+                <input type="email" id="regEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="regPhone">Số điện thoại</label>
+                <input type="tel" id="regPhone">
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Mật khẩu</label>
+                <input type="password" id="regPassword" required minlength="6">
+            </div>
+            <div class="form-group">
+                <label for="regDisplayName">Tên hiển thị</label>
+                <input type="text" id="regDisplayName">
+            </div>
+            <button type="submit">Đăng Ký</button>
+            <div class="toggle-form">
+                Đã có tài khoản? <a href="#" onclick="toggleForm(); return false;">Đăng nhập</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080/api/users';
+
+        function toggleForm() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const message = document.getElementById('message');
+            
+            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+            registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
+            message.style.display = 'none';
+        }
+
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+        }
+
+        // Register Form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                username: document.getElementById('regUsername').value,
+                email: document.getElementById('regEmail').value,
+                phone: document.getElementById('regPhone').value,
+                password: document.getElementById('regPassword').value,
+                displayName: document.getElementById('regDisplayName').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showMessage('✅ Đăng ký thành công! Vui lòng đăng nhập.', 'success');
+                    setTimeout(() => {
+                        toggleForm();
+                    }, 2000);
+                } else {
+                    showMessage('❌ ' + (result.message || 'Đăng ký thất bại'), 'error');
+                }
+            } catch (error) {
+                showMessage('❌ Lỗi kết nối server. Vui lòng thử lại!', 'error');
+                console.error('Error:', error);
+            }
+        });
+
+        // Login Form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                // TODO: Implement proper login with JWT
+                const response = await fetch(`${API_URL}/username/${username}`);
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showMessage('✅ Đăng nhập thành công!', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    showMessage('❌ Tên đăng nhập hoặc mật khẩu không đúng!', 'error');
+                }
+            } catch (error) {
+                showMessage('❌ Lỗi kết nối server. Vui lòng thử lại!', 'error');
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
