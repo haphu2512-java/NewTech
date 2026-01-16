@@ -1,0 +1,53 @@
+# Zalo Clone - Important Files
+
+## Ignore these files
+.env
+.env.local
+.env.production
+
+# AWS Credentials
+aws-credentials.json
+credentials.json
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# Build files
+target/
+build/
+dist/
+out/
+*.class
+*.jar
+*.war
+*.ear
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Docker volumes data
+mysql_data/
+mongodb_data/
+redis_data/
+dynamodb_data/
+minio_data/

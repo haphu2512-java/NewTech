@@ -42,3 +42,27 @@ logging:
   level:
     com.zaloclone.user: DEBUG
     org.springframework.web: INFO
+
+# AWS Configuration
+aws:
+  region: us-east-1
+  # For production: Use IAM roles or environment variables
+  # For development: Use access keys (DO NOT commit real keys!)
+  accessKeyId: ${AWS_ACCESS_KEY_ID:}
+  secretAccessKey: ${AWS_SECRET_ACCESS_KEY:}
+  
+  # DynamoDB Configuration
+  dynamodb:
+    # Leave empty for AWS cloud, set for local DynamoDB
+    endpoint: ${DYNAMODB_ENDPOINT:}
+    tables:
+      users: zalo-users
+      sessions: zalo-user-sessions
+      presence: zalo-user-presence
+  
+  # S3 Configuration
+  s3:
+    bucket: zalo-media-bucket
+    # Leave empty for AWS cloud, set for MinIO local
+    endpoint: ${S3_ENDPOINT:}
+

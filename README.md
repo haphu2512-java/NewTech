@@ -60,9 +60,9 @@ Hệ thống OTT Messaging Platform là một ứng dụng nhắn tin thời gia
 ├──────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │
-│  │   Web App   │  │ Android App │  │   iOS App   │  │ Flutter App │   │
-│  │  (Angular/  │  │  (Native/   │  │  (Native/   │  │ (Cross -    │   │
-│  │   MVC .NET) │  │   Flutter)  │  │   Flutter)  │  │  platform)  │   │
+│  │   Web App   │  │ Android App │  │   iOS App   │  │  Mobile App │   │
+│  │  (ReactJS)  │  │   (React    │  │   (React    │  │   (React    │   │
+│  │             │  │   Native)   │  │   Native)   │  │   Native)   │   │
 │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘   │
 │         │                │                │                │           │
 │         └────────────────┴────────────────┴────────────────┘           │
@@ -593,7 +593,80 @@ Client → API Gateway → Media Service → Object Storage (S3)
 
 ---
 
-### 5.5. Object Storage (S3/MinIO)
+### 5.5. AWS DynamoDB Tables
+
+**Mục đích:** NoSQL database với low latency, auto-scaling
+
+**Tables chính:**
+
+#### 5.5.1. Users Table
+```
+Table: zalo-users
+Partition Key: userId (String)
+Sort Key: None
+
+Attributes:
+- userId (String) - UUID
+- username (String)
+- email (String)
+- phone (String)
+- password_hash (String)
+- avatar_url (String)
+- status (String) - online/offline/away
+- last_seen (Number) - timestamp
+- created_at (Number) - timestamp
+- updated_at (Number) - timestamp
+
+GSI (Global Secondary Index):
+- email-index: email (PK)
+- phone-index: phone (PK)
+- username-index: username (PK)
+```
+
+#### 5.5.2. UserSessions Table
+```
+Table: zalo-user-sessions
+Partition Key: userId (String)
+Sort Key: sessionId (String)
+
+Attributes:
+- userId (String)
+- sessionId (String)
+- token (String)
+- device_info (Map)
+- ip_address (String)
+- created_at (Number)
+- expires_at (Number)
+- is_active (Boolean)
+
+TTL: expires_at (auto-delete expired sessions)
+```
+
+#### 5.5.3. UserPresence Table
+```
+Table: zalo-user-presence
+Partition Key: userId (String)
+
+Attributes:
+- userId (String)
+- status (String) - online/offline/away
+- last_activity (Number) - timestamp
+- device_type (String)
+- socket_id (String)
+
+TTL: last_activity + 5 minutes (auto-cleanup)
+```
+
+**DynamoDB Features:**
+- **Auto-scaling**: Tự động scale read/write capacity
+- **Point-in-time Recovery**: Backup continuous
+- **DynamoDB Streams**: Event-driven architecture
+- **Global Tables**: Multi-region replication
+- **DAX (DynamoDB Accelerator)**: In-memory caching
+
+---
+
+### 5.6. Object Storage (S3/MinIO)
 
 **Mục đích:** Lưu trữ file media (images, videos, documents)
 
@@ -611,7 +684,7 @@ Client → API Gateway → Media Service → Object Storage (S3)
 
 ---
 
-### 5.6. Elasticsearch
+### 5.7. Elasticsearch
 
 **Mục đích:** Full-text search và log aggregation
 
@@ -714,6 +787,38 @@ Message Service → Kafka (message.sent) → Notification Service
 - **Redis 7.0**: Caching, session, pub/sub
 - **PostgreSQL 15**: Analytics, complex queries
 - **Elasticsearch 8.x**: Full-text search, logging
+- **AWS DynamoDB**: NoSQL database, serverless, high scalability
+
+### 7.2.1. AWS Services Integration
+
+- **Amazon DynamoDB**: 
+  - User profile storage với low latency
+  - Session management và caching
+  - Real-time presence data
+  - Auto-scaling capacity
+  
+- **Amazon S3**: 
+  - Media file storage (images, videos, documents)
+  - Static asset hosting
+  - Backup và archival
+  
+- **Amazon ElastiCache** (Redis compatible):
+  - Distributed caching
+  - Session management
+  - Real-time analytics
+  
+- **Amazon RDS**:
+  - Managed MySQL/PostgreSQL
+  - Automated backups
+  - Multi-AZ deployment
+  
+- **Amazon MSK** (Managed Streaming for Kafka):
+  - Event streaming
+  - Inter-service communication
+  
+- **Amazon CloudFront**:
+  - CDN cho static assets
+  - Low latency content delivery
 
 ### 7.3. Message Queue & Streaming
 
@@ -723,12 +828,28 @@ Message Service → Kafka (message.sent) → Notification Service
 ### 7.4. Frontend Technologies
 
 **Web:**
-- **Option 1**: ASP.NET MVC (.NET 8) - Server-side rendering, tích hợp tốt với .NET backend
-- **Option 2**: Angular 17+ - SPA, TypeScript, component-based
+- **ReactJS 18+**: 
+  - Single Page Application (SPA)
+  - Component-based architecture
+  - Virtual DOM for performance
+  - Rich ecosystem (Redux, React Router, etc.)
+  - TypeScript support
+  - Modern hooks and functional components
 
 **Mobile:**
-- **Flutter**: Cross-platform (iOS + Android), single codebase
-- **Alternative**: Native (Swift cho iOS, Kotlin cho Android) - Performance tối ưu
+- **React Native**: 
+  - Cross-platform (iOS + Android) với single codebase
+  - Native performance với JavaScript
+  - Hot reload for faster development
+  - Shared code với web app (React)
+  - Large community và third-party libraries
+  - Expo support cho rapid development
+
+**Benefits of React Ecosystem:**
+- Code sharing giữa web và mobile
+- Single language (JavaScript/TypeScript)
+- Unified development experience
+- Large developer community
 
 ---
 
@@ -1121,8 +1242,8 @@ Hệ thống OTT Messaging Platform được thiết kế theo kiến trúc **Mi
 │                    FULL TECHNOLOGY STACK                    │
 ├─────────────────────────────────────────────────────────────┤
 │ FRONTEND                                                    │
-│   • Web: Angular 17+ / ASP.NET MVC                          │
-│   • Mobile: Flutter / Android (Kotlin) / iOS (Swift)        │
+│   • Web: ReactJS 18+ (SPA, TypeScript)                      │
+│   • Mobile: React Native (iOS + Android)                    │
 ├─────────────────────────────────────────────────────────────┤
 │ BACKEND                                                     │
 │   • Java Spring Boot 3.x (User, Friend, Group, Analytics)  │
