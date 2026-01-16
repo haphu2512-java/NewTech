@@ -39,10 +39,12 @@ zalo-clone/
 │               └── kafkaProducer.js
 │
 ├── frontend/
-│   └── web-app/                      # ✅ HTML/CSS/JS
-│       ├── index.html
-│       ├── css/style.css
-│       └── js/app.js
+│   ├── web-app/                      # ✅ ReactJS
+|   ├── shared/                       # ✅ Typescript
+│   └── mobile-app/                   # ✅ React Native
+│   
+│       
+│       
 │
 └── infrastructure/
     └── kubernetes/
@@ -278,26 +280,3 @@ KAFKA_BROKER=localhost:9092
 - [Spring Boot Documentation](https://spring.io/projects/spring-boot)
 - [Socket.IO Documentation](https://socket.io/docs/)
 - [Kafka Documentation](https://kafka.apache.org/documentation/)
-
-## 👨‍💻 Development Tips
-
-1. **Sử dụng Nodemon** cho NodeJS services (auto-reload)
-2. **Spring DevTools** cho Java services (hot reload)
-3. **Postman/Insomnia** để test APIs
-4. **MongoDB Compass** để xem database
-5. **Redis Commander** để xem cache
-
-## 🎓 Học Tập & Mở Rộng
-
-Đây là một **project mẫu học tập**. Bạn có thể:
-
-1. Thêm các tính năng mới (voice call, video call)
-2. Implement các service còn lại
-3. Thêm tests (JUnit, Jest)
-4. Deploy lên cloud (AWS, GCP, Azure)
-5. Thêm CI/CD pipeline
-6. Implement monitoring với Prometheus/Grafana
-
----
-
-**Happy Coding! 🚀**
