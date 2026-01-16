@@ -7,6 +7,15 @@
 
 ---
 
+# THÀNH VIÊN NHÓM
+- Nguyễn Xuân Thi (Leader)
+- Hà Xuân Phú (Backend)
+- Nguyễn Thị Kiều Trang (Backend)
+- Huỳnh Lệ Hoan (Frontend/App)
+- Nguyễn Hoa (Frontend/Mobile)
+
+---
+
 ## MỤC LỤC
 
 1. [TỔNG QUAN HỆ THỐNG](#1-tổng-quan-hệ-thống)
