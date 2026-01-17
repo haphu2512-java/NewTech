@@ -127,6 +127,4 @@ git checkout -b hotfix/issue-name main
 - Chủ động pull code mỗi ngày  
 - Không push code khi chưa test  
 
----
 
-> Git là công cụ – kỷ luật mới là sức mạnh của team

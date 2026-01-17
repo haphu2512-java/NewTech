@@ -1,21 +1,21 @@
 version: '3.8'
 
 services:
-  # MySQL Database
-  mysql:
-    image: mysql:8.0
-    container_name: zalo-mysql
+  # MariaDB Database
+  mariadb:
+    image: mariadb:11
+    container_name: zalo-mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: zalo_users
+      MARIADB_ROOT_PASSWORD: password
+      MARIADB_DATABASE: zalo_users
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     networks:
       - zalo-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -112,7 +112,7 @@ services:
       dockerfile: Dockerfile
     container_name: zalo-user-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/zalo_users?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/zalo_users?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_REDIS_HOST: redis
@@ -125,7 +125,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      - mariadb
       - redis
       - kafka
       - dynamodb-local
@@ -170,7 +170,7 @@ networks:
     driver: bridge
 
 volumes:
-  mysql_data:
+  mariadb_data:
   mongodb_data:
   redis_data:
   dynamodb_data:

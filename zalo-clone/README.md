@@ -25,7 +25,7 @@ zalo-clone/
 │   ├── kubernetes/           # K8s manifests
 │   └── monitoring/           # Prometheus, Grafana
 ├── database/                 # Database schemas & migrations
-│   ├── mysql/
+│   ├── mariadb/
 │   ├── mongodb/
 │   └── redis/
 ├── gateway/                  # API Gateway
@@ -39,7 +39,7 @@ zalo-clone/
 - Node.js 18+
 - Python 3.10+
 - Docker & Docker Compose
-- MySQL 8.0
+- MariaDB 11
 - MongoDB 6.0
 - Redis 7.0
 
@@ -119,7 +119,7 @@ Xem [KIEN_TRUC_HE_THONG_OTT.md](../README.md) để biết chi tiết về kiế
 
 - **Backend**: Java Spring Boot, NodeJS, Python FastAPI
 - **Frontend**: ReactJS (Web), React Native (Mobile)
-- **Database**: MySQL, MongoDB, Redis, PostgreSQL, Elasticsearch, **AWS DynamoDB**
+- **Database**: MariaDB, MongoDB, Redis, PostgreSQL, Elasticsearch, **AWS DynamoDB**
 - **Message Queue**: Apache Kafka
 - **Cloud Services**: **AWS (DynamoDB, S3, ElastiCache, RDS, MSK, CloudFront)**
 - **Deployment**: Docker, Kubernetes

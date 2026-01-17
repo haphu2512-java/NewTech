@@ -74,7 +74,7 @@ docker-compose down
 - Web App: http://localhost:8000
 - User Service: http://localhost:8080
 - Message Service: http://localhost:8083
-- MySQL: localhost:3306
+- MariaDB: localhost:3306
 - MongoDB: localhost:27017
 - Redis: localhost:6379
 - Kafka: localhost:9092
@@ -99,7 +99,7 @@ cp .env.example .env
 
 #### B. Khởi động Databases
 
-**MySQL:**
+**MariaDB:**
 ```sql
 CREATE DATABASE zalo_users;
 ```
@@ -210,7 +210,7 @@ curl http://localhost:8083/api/messages/conversation/conv_123
 - Đăng ký/Đăng nhập user
 - Quản lý profile
 - JWT authentication (chuẩn bị)
-- Integration với MySQL + Redis
+- Integration với MariaDB + Redis
 
 ✅ **Message Service:**
 - Gửi/nhận tin nhắn realtime
@@ -243,7 +243,7 @@ curl http://localhost:8083/api/messages/conversation/conv_123
 ## 🔧 Configuration Notes
 
 ### Database Connections
-- **MySQL:** `jdbc:mysql://localhost:3306/zalo_users`
+- **MariaDB:** `jdbc:mariadb://localhost:3306/zalo_users`
 - **MongoDB:** `mongodb://localhost:27017/zalo_messages`
 - **Redis:** `localhost:6379`
 
@@ -261,7 +261,7 @@ KAFKA_BROKER=localhost:9092
 ## 🐛 Troubleshooting
 
 **Lỗi kết nối Database:**
-- Kiểm tra MySQL/MongoDB đã chạy chưa
+- Kiểm tra MariaDB/MongoDB đã chạy chưa
 - Kiểm tra username/password trong config
 - Kiểm tra firewall/port
 

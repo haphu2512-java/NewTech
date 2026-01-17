@@ -24,16 +24,16 @@ spec:
           name: http
         env:
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://mysql-service:3306/zalo_users
+          value: jdbc:mariadb://mariadb-service:3306/zalo_users
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
+              name: mariadb-secret
               key: username
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
+              name: mariadb-secret
               key: password
         - name: SPRING_REDIS_HOST
           value: redis-service
